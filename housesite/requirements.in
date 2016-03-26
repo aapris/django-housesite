@@ -1,0 +1,20 @@
+pip-tools
+
+# Wagtail
+wagtail>=1.4.1,<1.5
+django-compressor
+django-allauth
+psycopg2
+gunicorn  # for deploying with supervisor
+raven     # Sentry integration
+# Wiki
+django-sekizai
+Pillow
+wiki
+reportlab
+
+#sorl-thumbnail>12.3  # 12.3 is broken
+
+# i18n
+django-rosetta
+python-memcached
