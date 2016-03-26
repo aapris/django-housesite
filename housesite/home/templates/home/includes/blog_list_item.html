@@ -1,0 +1,24 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{# Individual blog item in a list - used on blog index and home page #}
+<a class="col-md-3 col-sm-6 col-xs-12" style="min-height:150px;margin:20px" href="{% pageurl blog %}">
+  <div class="media">
+    {% if blog.feed_image %}
+      <div class="media-left">
+        {% image blog.feed_image width-100 as img %}
+        <img class="media-object" src="{{ img.url }}" />
+      </div>
+      {% else %}
+            <div class="media-left">
+          <i class="fa fa-2x fa-newspaper-o wow bounceIn text-primary" style="visibility: visible; animation-name: bounceIn;"></i>
+          </div>
+    {% endif %}
+    <div class="media-body">
+      <h4 class="media-heading">{{ blog.title }}</h4>
+      <p><strong>{{ blog.date }}</strong></p>
+      {% if blog.search_description %}
+        <p>{{ blog.search_description }}</p>
+      {% endif %}
+    </div>
+  </div>
+</a>
