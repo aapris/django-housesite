@@ -89,6 +89,7 @@ class RelatedLink(LinkFields):
 
 class BlogIndexPage(Page):
     intro = RichTextField(blank=True)
+    subpage_types = ['home.BlogPage', ]
 
     content_panels = Page.content_panels + [
         FieldPanel('intro', classname="full"),
