@@ -21,3 +21,9 @@ cd ../..
 python manage.py migrate
 python manage.py createsuperuser
 ```
+
+* Go to /admin/
+* Navigate to Explorer --> Welcome to your new Wagtail site!
+* Create a new subpage (type Home Page) and then move this page into 'Root'.
+* Go to Settings -> Sites and change Root page
+
