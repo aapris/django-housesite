@@ -96,7 +96,7 @@ def standard_index_listing(context, calling_page):
 def blog_listing_homepage(context, count=2):
     blogs = BlogPage.objects.live().order_by('-date')
     return {
-        'blogs': blogs[:count].select_related('feed_image'),
+        'blogs': blogs[:count],  # .select_related('feed_image'),
         # required by the pageurl tag that we want to use within this template
         'request': context['request'],
     }
