@@ -1,0 +1,26 @@
+{% extends "home/base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <h1>{{ page.title }}</h1>
+    <p class="meta">{{ page.date|date:"d.m.Y" }}</p>
+
+    {% if page.main_image %}
+      {% image page.main_image width-400 %}
+    {% endif %}
+
+    <div class="intro">{{ page.intro }}</div>
+
+    {{ page.body|richtext }}
+    <ul>
+    {% for foo in page.attachments.all %}
+        <li>
+        {{ foo.text }}<br>
+        <a href="{{ foo.attachment.url }}">{{ foo.attachment.file }}</a>
+        ({{ foo.attachment.file.size|filesizeformat }})
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

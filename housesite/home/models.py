@@ -14,6 +14,10 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel,
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailsearch import index
 
+from wagtail.wagtaildocs.models import Document
+from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 # This is the root home page
 class HomePage(Page):
@@ -22,6 +26,86 @@ class HomePage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body', classname="full")
     ]
+
+
+class NewssheetPage(Page):
+    body = RichTextField(blank=True)
+    date = models.DateField("News sheet date")
+
+
+# TODO: This could be in NewssheetPage class?
+NewssheetPage.content_panels = Page.content_panels + [
+    # DocumentChooserPanel('attachments'),
+    FieldPanel('body', classname="full"),
+    FieldPanel('date'),
+    InlinePanel('attachments', label="Attachments"),
+    # DocumentChooserPanel('advert_placements'),
+]
+
+
+class NewssheetPageAttachments(models.Model):
+    attachment = models.ForeignKey(
+        'wagtaildocs.Document',
+        null=True,
+        blank=True,
+        related_name='+'
+    )
+    text = models.CharField(max_length=255)
+    page = ParentalKey('NewssheetPage', related_name='attachments')
+
+    panels = [
+        DocumentChooserPanel('attachment'),
+        FieldPanel('text'),
+    ]
+
+    def __str__(self):
+        return self.text
+
+
+class NewssheetIndexPage(Page):
+    intro = RichTextField(blank=True)
+    subpage_types = ['home.NewssheetPage', ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro', classname="full"),
+        # InlinePanel('related_links', label="Related links"),
+    ]
+
+
+    @property
+    def newssheets(self):
+        # Get list of live blog pages that are descendants of this page
+        newssheets = NewssheetPage.objects.live().descendant_of(self)
+
+        # Order by most recent date first
+        newssheets = newssheets.order_by('-date')
+
+        return newssheets
+
+
+    def get_context(self, request):
+        # Get newssheets
+        newssheets = self.newssheets
+
+        # Filter by tag
+        tag = request.GET.get('tag')
+        if tag:
+            newssheets = newssheets.filter(tags__name=tag)
+
+        # Pagination
+        page = request.GET.get('page')
+        paginator = Paginator(newssheets, 10)  # Show 10 newssheets per page
+        try:
+            newssheets = paginator.page(page)
+        except PageNotAnInteger:
+            newssheets = paginator.page(1)
+        except EmptyPage:
+            newssheets = paginator.page(paginator.num_pages)
+
+        # Update template context
+        context = super(NewssheetIndexPage, self).get_context(request)
+        context['newssheets'] = newssheets
+        return context
 
 
 class BlogPage(Page):

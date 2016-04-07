@@ -3,7 +3,7 @@ from django import template
 from django.conf import settings
 
 # from home.models import PersonPage, BlogPage, EventPage, Advert, Page
-from home.models import HomePage, BlogPage, Page
+from home.models import HomePage, BlogPage, NewssheetPage, Page
 
 register = template.Library()
 
@@ -100,6 +100,20 @@ def blog_listing_homepage(context, count=2):
         # required by the pageurl tag that we want to use within this template
         'request': context['request'],
     }
+
+
+@register.inclusion_tag(
+    'home/tags/newssheet_listing_homepage.html',
+    takes_context=True
+)
+def newssheet_listing_homepage(context, count=2):
+    newssheets = NewssheetPage.objects.live().order_by('-date')
+    return {
+        'newssheets': newssheets[:count],  # .select_related('feed_image'),
+        # required by the pageurl tag that we want to use within this template
+        'request': context['request'],
+    }
+
 
 
 # Events feed for home page
