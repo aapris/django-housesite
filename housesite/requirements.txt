@@ -5,7 +5,7 @@
 #    pip-compile requirements.in
 #
 beautifulsoup4==4.4.1     # via wagtail
-click==6.4                # via pip-tools
+click==6.6                # via pip-tools
 contextlib2==0.5.1        # via raven
 defusedxml==0.4.1         # via python3-openid
 django-allauth==0.25.2
@@ -15,11 +15,11 @@ django-compressor==2.0
 django-modelcluster==1.1  # via wagtail
 django-mptt==0.8.3        # via wiki
 django-nyt==0.9.9         # via wiki
-django-rosetta==0.7.10
+django-rosetta==0.7.11
 django-sekizai==0.9.0
-django-taggit==0.18.0     # via wagtail
+django-taggit==0.18.1     # via wagtail
 django-treebeard==4.0     # via wagtail
-Django==1.9.4             # via django-allauth, django-classy-tags, django-mptt, django-nyt, django-rosetta, django-treebeard, wagtail, wiki
+Django==1.9.5             # via django-allauth, django-classy-tags, django-mptt, django-nyt, django-rosetta, django-treebeard, wagtail, wiki
 djangorestframework==3.3.3  # via wagtail
 first==2.0.1              # via pip-tools
 gunicorn==19.4.5
@@ -27,14 +27,14 @@ html5lib==0.9999999       # via wagtail
 Markdown==2.6.6           # via wiki
 microsofttranslator==0.7  # via django-rosetta
 oauthlib==1.0.3           # via requests-oauthlib
-Pillow==3.1.1             # via reportlab, wagtail, wiki
+Pillow==3.2.0             # via reportlab, wagtail, wiki
 pip-tools==1.6
 polib==1.0.7              # via django-rosetta
 psycopg2==2.6.1
 python-memcached==1.57
-python3-openid==3.0.9     # via django-allauth
+python3-openid==3.0.10    # via django-allauth
 pytz==2016.3              # via django-modelcluster
-raven==5.11.2
+raven==5.12.0
 rcssmin==1.0.6            # via django-compressor
 reportlab==3.3.0
 requests-oauthlib==0.6.1  # via django-allauth
@@ -43,7 +43,7 @@ rjsmin==1.0.12            # via django-compressor
 six==1.10.0               # via django-appconf, django-nyt, django-rosetta, html5lib, microsofttranslator, pip-tools, python-memcached, wiki
 sorl-thumbnail==12.3      # via wiki
 Unidecode==0.4.19         # via wagtail
-wagtail==1.4.1
+wagtail==1.4.3
 wiki==0.1
 Willow==0.3               # via wagtail
 
