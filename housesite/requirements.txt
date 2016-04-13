@@ -28,7 +28,7 @@ Markdown==2.6.6           # via wiki
 microsofttranslator==0.7  # via django-rosetta
 oauthlib==1.0.3           # via requests-oauthlib
 Pillow==3.2.0             # via reportlab, wagtail, wiki
-pip-tools==1.6
+pip-tools==1.6.1
 polib==1.0.7              # via django-rosetta
 psycopg2==2.6.1
 python-memcached==1.57
@@ -42,6 +42,7 @@ requests==2.9.1           # via django-allauth, django-rosetta, microsofttransla
 rjsmin==1.0.12            # via django-compressor
 six==1.10.0               # via django-appconf, django-nyt, django-rosetta, html5lib, microsofttranslator, pip-tools, python-memcached, wiki
 sorl-thumbnail==12.3      # via wiki
+South==1.0.2              # via wiki
 Unidecode==0.4.19         # via wagtail
 wagtail==1.4.3
 wiki==0.1
