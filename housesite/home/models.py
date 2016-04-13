@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.shortcuts import render
+
 from modelcluster.fields import ParentalKey
 
 from wagtail.wagtailcore.models import Page
@@ -18,6 +20,9 @@ from wagtail.wagtaildocs.models import Document
 from wagtail.wagtaildocs.edit_handlers import DocumentChooserPanel
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from modelcluster.tags import ClusterTaggableManager
+from taggit.models import TaggedItemBase
+
 
 # This is the root home page
 class HomePage(Page):
@@ -28,9 +33,14 @@ class HomePage(Page):
     ]
 
 
+class NewssheetPageTag(TaggedItemBase):
+    content_object = ParentalKey('home.NewssheetPage', related_name='tagged_items')
+
+
 class NewssheetPage(Page):
     body = RichTextField(blank=True)
     date = models.DateField("News sheet date")
+    tags = ClusterTaggableManager(through=NewssheetPageTag, blank=True)
 
 
 # TODO: This could be in NewssheetPage class?
@@ -38,6 +48,7 @@ NewssheetPage.content_panels = Page.content_panels + [
     # DocumentChooserPanel('attachments'),
     FieldPanel('body', classname="full"),
     FieldPanel('date'),
+    FieldPanel('tags', classname="Tagit"),
     InlinePanel('attachments', label="Attachments"),
     # DocumentChooserPanel('advert_placements'),
 ]
@@ -71,6 +82,24 @@ class NewssheetIndexPage(Page):
         # InlinePanel('related_links', label="Related links"),
     ]
 
+    def serve(self, request):
+        # Get blogs
+        newssheets = self.newssheets
+
+        # Filter by tag
+        tag = request.GET.get('tag')
+        if tag:
+            newssheets = newssheets.filter(tags__name=tag)
+
+        all_tags = NewssheetPageTag.objects.all()
+        for t in all_tags:
+            print(t)
+        return render(request, self.template, {
+            'self': self,
+            'page': self,
+            'newssheets': newssheets,
+            'all_tags': all_tags,
+        })
 
     @property
     def newssheets(self):
