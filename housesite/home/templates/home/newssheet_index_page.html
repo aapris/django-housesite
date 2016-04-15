@@ -5,30 +5,40 @@
 {% block body_class %}template-newssheetindexpage{% endblock %}
 
 {% block content %}
+<style type="text/css">
+li.newssheet.not-public a, li.newssheet.not-public {
+    color: #ccc;
+}
+</style>
     <h1>{{ page.title }}</h1>
 
     <div class="intro">{{ page.intro|richtext }}</div>
 
-    <hr>
-
-    {% for tag in page.tags.all %}z
+{% comment %}
+{% for tag in page.tags.all %}
 <a href="{% pageurl page.newssheet_index %}?tag={{ tag }}">{{ tag }}</a>
 {% endfor %}
-    <hr>
+{% endcomment %}
 
-{% for tag in all_tags %} xxx
-    {{ tag.tag }}
-    {% endfor %}
-    <hr>
     <ul>
+{% comment %}
     {% for ns in page.newssheets %}
         <li><a href="{{ ns.url }}">{{ ns.title }}</a> {{ ns.date|date:"d.m.Y" }}</li>
     {% endfor %}
+{% endcomment %}
     {% for ns in newssheets %}
-        <li>tag: <a href="{{ ns.url }}">{{ ns.title }}</a> {{ ns.date|date:"d.m.Y" }}</li>
+        {% if ns.public %}
+        <li class="newssheet public"><a href="{{ ns.url }}">{{ ns.title }}</a> ({{ ns.date|date:"d.m.Y" }})</li>
+        {% else %}
+        <li class="newssheet not-public"><a href="{{ ns.url }}">{{ ns.title }}</a> ({{ ns.date|date:"d.m.Y" }})</li>
+        {% endif %}
     {% endfor %}
     </ul>
-{% comment %}
+<h2>Suosituimmat tunnisteet</h2>
+<ul>{% for tag in all_tags %}
+    <li><a href="?tag={{ tag.tag__name }}">{{ tag.tag__name }} ({{ tag.occurrences }})</a></li>
+{% endfor %}</ul>
+    {% comment %}
 {% newssheet_listing_homepage %}
     <hr>
 {% endcomment %}

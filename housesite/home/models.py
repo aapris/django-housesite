@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models import Count
 from django.shortcuts import render
 
 from modelcluster.fields import ParentalKey
@@ -40,6 +41,7 @@ class NewssheetPageTag(TaggedItemBase):
 class NewssheetPage(Page):
     body = RichTextField(blank=True)
     date = models.DateField("News sheet date")
+    public = models.BooleanField(default=False)
     tags = ClusterTaggableManager(through=NewssheetPageTag, blank=True)
 
 
@@ -48,6 +50,7 @@ NewssheetPage.content_panels = Page.content_panels + [
     # DocumentChooserPanel('attachments'),
     FieldPanel('body', classname="full"),
     FieldPanel('date'),
+    FieldPanel('public'),
     FieldPanel('tags', classname="Tagit"),
     InlinePanel('attachments', label="Attachments"),
     # DocumentChooserPanel('advert_placements'),
@@ -91,9 +94,12 @@ class NewssheetIndexPage(Page):
         if tag:
             newssheets = newssheets.filter(tags__name=tag)
 
-        all_tags = NewssheetPageTag.objects.all()
-        for t in all_tags:
-            print(t)
+        # all_tags = NewssheetPageTag.objects.all()
+        # print(dir(all_tags[0]))
+        all_tags = NewssheetPageTag.objects.values('tag__name').annotate(occurrences=Count('tag'))
+        print(all_tags)
+        # for t in all_tags:
+        #     print(t)
         return render(request, self.template, {
             'self': self,
             'page': self,
