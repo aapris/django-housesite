@@ -131,6 +131,8 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+MAIL_DIR = os.path.join(BASE_DIR, "var", "mail")
+os.makedirs(MAIL_DIR, exist_ok=True)
 
 # Wagtail settings
 
