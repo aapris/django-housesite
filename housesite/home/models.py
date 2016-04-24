@@ -1,5 +1,9 @@
 from __future__ import unicode_literals
 
+import os
+import hashlib
+from io import IOBase
+
 from django.db import models
 from django.db.models import Count
 from django.shortcuts import render
@@ -23,6 +27,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from modelcluster.tags import ClusterTaggableManager
 from taggit.models import TaggedItemBase
+
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.core.files.base import ContentFile
+mail_storage = FileSystemStorage(location=settings.MAIL_DIR)
 
 
 # This is the root home page
@@ -218,3 +227,51 @@ class BlogIndexPage(Page):
 
 class BlogIndexRelatedLink(Orderable, RelatedLink):
     page = ParentalKey('BlogIndexPage', related_name='related_links')
+
+
+class Mail(models.Model):
+    """
+    Retrieved Mail files
+    """
+    status = models.CharField(max_length=40, default="UNPROCESSED",
+                              editable=True,
+                              choices=(("UNPROCESSED", "UNPROCESSED"),
+                                       ("PROCESSED", "PROCESSED"),
+                                       ("DUPLICATE", "DUPLICATE"),
+                                       ("FAILED", "FAILED")))
+    filesize = models.IntegerField(null=True, editable=False)
+    file = models.FileField(# storage=mail_storage,
+                            upload_to='mail/%Y/%m/%d/', editable=False)
+    md5 = models.CharField(max_length=32, db_index=True, editable=False)
+    sha1 = models.CharField(max_length=40, db_index=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    processed = models.DateTimeField(null=True)
+
+    def set_file(self, filecontent, host):
+        """
+        Set Content.file and all it's related fields.
+        filecontent may be
+        - open file handle (opened in "rb"-mode)
+        - existing file name (full path)
+        - raw file data
+        NOTE: this reads all file content into memory
+        """
+        if isinstance(filecontent, IOBase):
+            filecontent.seek(0)
+            filedata = filecontent.read()
+        elif len(filecontent) < 1000 and os.path.isfile(filecontent):
+            f = open(filecontent, "rb")
+            filedata = f.read()
+            f.close()
+        else:
+            filedata = filecontent
+        self.md5 = hashlib.md5(filedata).hexdigest()
+        self.sha1 = hashlib.sha1(filedata).hexdigest()
+        self.save()  # Must save here to get self.id
+        filename = u"%09d-%s" % (self.id, host)
+        self.file.save(filename, ContentFile(filedata))
+        self.filesize = self.file.size
+        cnt = Mail.objects.filter(md5=self.md5).filter(sha1=self.sha1).count()
+        if cnt > 1:
+            self.status = 'DUPLICATE'
+        self.save()
