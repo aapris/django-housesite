@@ -7,46 +7,46 @@
 
 beautifulsoup4==4.4.1     # via wagtail
 click==6.6                # via pip-tools
-contextlib2==0.5.1        # via raven
+contextlib2==0.5.3        # via raven
 defusedxml==0.4.1         # via python3-openid
 django-allauth==0.25.2
 django-appconf==1.0.2     # via django-compressor
 django-classy-tags==0.7.2  # via django-sekizai
 django-compressor==2.0
-django-modelcluster==1.1  # via wagtail
-django-mptt==0.8.3        # via wiki
+django-modelcluster==2.0  # via wagtail
+django-mptt==0.8.4        # via wiki
 django-nyt==0.9.9         # via wiki
 django-rosetta==0.7.11
 django-sekizai==0.9.0
-django-taggit==0.18.1     # via wagtail
-django-treebeard==4.0     # via wagtail
-Django==1.9.5             # via django-allauth, django-classy-tags, django-mptt, django-nyt, django-rosetta, django-treebeard, wagtail, wiki
+django-taggit==0.18.3     # via wagtail
+django-treebeard==4.0.1   # via wagtail
+Django==1.9.7             # via django-allauth, django-classy-tags, django-mptt, django-nyt, django-rosetta, django-treebeard, wagtail, wiki
 djangorestframework==3.3.3  # via wagtail
 first==2.0.1              # via pip-tools
-gunicorn==19.4.5
+gunicorn==19.6.0
 html5lib==0.9999999       # via wagtail
 Markdown==2.6.6           # via wiki
-microsofttranslator==0.7  # via django-rosetta
-oauthlib==1.0.3           # via requests-oauthlib
+microsofttranslator==0.8  # via django-rosetta
+oauthlib==1.1.2           # via requests-oauthlib
 Pillow==3.2.0             # via reportlab, wagtail, wiki
-pip-tools==1.6.1
+pip-tools==1.6.5
 polib==1.0.7              # via django-rosetta
 psycopg2==2.6.1
-python-memcached==1.57
+python-memcached==1.58
 python3-openid==3.0.10    # via django-allauth
 pytz==2016.4              # via django-modelcluster
-raven==5.13.0
+raven==5.21.0
 rcssmin==1.0.6            # via django-compressor
 reportlab==3.3.0
 requests-oauthlib==0.6.1  # via django-allauth
-requests==2.9.1           # via django-allauth, django-rosetta, microsofttranslator, requests-oauthlib
+requests==2.10.0          # via django-allauth, django-rosetta, microsofttranslator, requests-oauthlib
 rjsmin==1.0.12            # via django-compressor
 six==1.10.0               # via django-nyt, django-rosetta, html5lib, microsofttranslator, pip-tools, python-memcached, wiki
 sorl-thumbnail==12.3      # via wiki
 Unidecode==0.4.19         # via wagtail
-wagtail==1.4.3
-wiki==0.1
-Willow==0.3               # via wagtail
+wagtail==1.5.2
+wiki==0.1.2
+Willow==0.3.1             # via wagtail
 
 # The following packages are commented out because they are
 # considered to be unsafe in a requirements file:
