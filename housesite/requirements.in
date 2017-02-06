@@ -1,7 +1,7 @@
 pip-tools
 
 # Wagtail
-wagtail>=1.6,<1.7
+wagtail>=1.8,<1.9
 django-compressor
 django-allauth
 psycopg2
